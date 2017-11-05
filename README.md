@@ -81,20 +81,18 @@ job "tshoot" {
 ##### Starting Consul and Nomad
 
 ```bash
-# Set target environment variables for advertisement
-export MY_INTERFACE="en0" # Change this depending on your config
-export MY_IP=`ifconfig $MY_INTERFACE | grep "inet " | awk '{print $2}'`
+# en0 represents a network interface to bind to and discover your hosts ip
+./consul-start.sh en0
 
-# Start Consul
-sudo consul agent -dev -dns-port 53 -client=0.0.0.0 -advertise=$MY_IP -bind=0.0.0.0
+# In another shell
+./nomad-start.sh en0
 
-# Start Nomad (In another shell, make sure to export the variables at the top)
-nomad agent --dev -network-interface=$MY_INTERFACE
 ```
 
 ##### Running Nomad Jobs and Discovering Eachother
 
 ```bash
+# In another shell
 nomad run tshoot.nomad
 nomad run tshoot2.nomad
 tshoot=`docker ps | grep "tshoot-" | head -n 1 | awk '{print $1}'`
