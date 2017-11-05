@@ -1,4 +1,4 @@
-### Reason for this existing:
+### Reason for this project
 
 Nomad and Consul while offering highly functional defaults, in the scope of docker the default -dev configuration
 leaves much to be desired. Namely binding and advertising of 127.0.0.1 prevents a container from being able to
@@ -10,26 +10,27 @@ With [address_mode](https://www.nomadproject.io/docs/job-specification/service.h
 - Each Docker node must have a unique IP Block for the bridge network on each host and a IPSEC Tunnel configured in a full mesh topography.
 
 With [address_mode](https://www.nomadproject.io/docs/job-specification/service.html#address_mode) set to `auto` or `host` your production environment can be:
-- Static or Dynamically assigned ports
-- May utilize conflicting subnets on each docker host
+- Static or Dynamically allocated ports.
+- May utilize conflicting subnets on each docker host.
 - Does not require IPSEC Tunnels or Complex Overlay for Fan networks.
 - If Dynamic port assignment is used, Some method of Service Discovery must be implemented within your application.
 
 ### Install Consul and Nomad
 
 Download Consul Here: [https://www.consul.io/downloads.html](https://www.consul.io/downloads.html)
+
 Download Nomad Here:  [https://www.nomadproject.io/downloads.html](https://www.nomadproject.io/downloads.html)
 
 Unzip the files into a directory in your path, EX: `/usr/local/bin`
 
-### Configuring for `address_mode = "driver"`:
+### Configuring for `address_mode = "driver"`
 
 HELP WANTED - Not currently a priority as the administrative burden to accomplish this is significant for not much win.
 Additionally it is not possible via the mechinism used below to dynamically discover the consul agents ip address for DNS setting.
 
 Any assistance with fleshing out this design further would be appreciated.
 
-##### Example Nomad job:
+##### Example Nomad job
 
 ```hcl
 job "tshoot" { 
@@ -110,7 +111,7 @@ dig tshoot2.service.consul. SRV
 curl http://${HOST_IP}:8500/v1/catalog/service/tshoot
 ```
 
-##### Example output of discovery
+##### Example output of service discovery
 
 ```
 $ docker ps
