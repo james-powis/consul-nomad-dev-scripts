@@ -2,9 +2,15 @@
 
 # Set target environment variables for advertisement
 my_int=$1
-if [ ! $my_int ]; then
+if [ $my_int ]; then
+  my_int=$1
+  echo set
+else
   my_int="en0" # en0 is the default nic on a mac, sorry linux users, patches welcome
 fi
+
+echo $my_int
+exit
 
 # Start Nomad (In another shell, make sure to export the variables at the top)
 nomad agent --dev -network-interface=$my_int
